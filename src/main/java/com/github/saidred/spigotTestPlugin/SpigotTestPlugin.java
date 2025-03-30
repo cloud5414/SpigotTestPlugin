@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.TraderLlama;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -35,10 +36,10 @@ public final class SpigotTestPlugin extends JavaPlugin {
       Block centerBlock = clickedBlock.getRelative(event.getBlockFace());
       // Spawn target location.
       Location loc = centerBlock.getLocation();
-      // Spawn horses.
-      AbstractHorse horse = (AbstractHorse) loc.getWorld().spawnEntity(loc, EntityType.HORSE);
-      // Set saddle to spawned horses.
-      horse.getInventory().setSaddle(new ItemStack(Material.SADDLE, 1));
+      // Spawn Trader Lllama.
+      TraderLlama traderLlama = (TraderLlama) loc.getWorld().spawnEntity(loc, EntityType.TRADER_LLAMA);
+      // Set carpet to spawned Trader Llama.
+      traderLlama.getInventory().setDecor(new ItemStack(Material.WHITE_CARPET, 1));
       getLogger().info("<< EVENT TEST LOG END >>");
     }
   }
