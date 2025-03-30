@@ -1,42 +1,45 @@
 package com.github.saidred.spigotTestPlugin;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.AbstractHorse;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class SpigotTestPlugin extends JavaPlugin {
   public static JavaPlugin plugin;
-  public SpigotTestPlugin(){plugin = this;}
+
+  public SpigotTestPlugin() {
+    plugin = this;
+  }
 
   @Override
   public void onEnable() {
-    // イベントサンプル
-    getServer().getPluginManager().registerEvents(new testEvent(),this);
-    // コマンドサンプル
-    getCommand("test").setExecutor(new testCommand());
+    // Event Sample
+    getServer().getPluginManager().registerEvents(new testEvent(), this);
   }
 
-  public class testEvent implements Listener{
+  public class testEvent implements Listener {
     @EventHandler
-    public void onEvent(BlockPlaceEvent event){
+    public void onEvent(PlayerInteractEvent event) {
       getLogger().info("<< EVENT TEST LOG START >>");
-      // テストイベント
+      // Event test codes.
+      // Spawn target block.
+      Block clickedBlock = event.getClickedBlock();
+      // Detecting centerd block.
+      Block centerBlock = clickedBlock.getRelative(event.getBlockFace());
+      // Spawn target location.
+      Location loc = centerBlock.getLocation();
+      // Spawn horses.
+      AbstractHorse horse = (AbstractHorse) loc.getWorld().spawnEntity(loc, EntityType.HORSE);
+      // Set saddle to spawned horses.
+      horse.getInventory().setSaddle(new ItemStack(Material.SADDLE, 1));
       getLogger().info("<< EVENT TEST LOG END >>");
-    }
-  }
-
-  public static class testCommand implements CommandExecutor {
-
-    @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-      plugin.getLogger().info("<< COMMAND TEST LOG START >>");
-      // テストコマンド
-      plugin.getLogger().info("<< COMMAND TEST LOG END >>");
-      return true;
     }
   }
 }
